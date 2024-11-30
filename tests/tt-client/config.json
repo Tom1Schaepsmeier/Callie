@@ -1,0 +1,20 @@
+{
+    "LoginTest": {
+        "PositiveLoginTest": {
+            "Credentials": {
+                "Email": "schaepsmeiert@web.de",
+                "Password": "Torwart.schule2016"
+            },
+            "Expected Response-Status": 201
+        },
+
+        "WrongCredentialsTest": {
+            "Credentials": {
+                "Email": "schaepsmeiert@web.de",
+                "Password": "Wrong-password123"
+            },
+            "Expected Response-Status": 402
+        }
+        
+    }
+}
