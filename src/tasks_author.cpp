@@ -2,37 +2,35 @@
 #include <fstream>
 #include <filesystem>
 #include "tasks_author.h"
+#include "markdown_writer.h"
 
 TasksAuthor::TasksAuthor(std::string vault_path) : mVault_path(vault_path)
 {
-    mTasks_filename = "calendar_tasks.md";
-    create_tasks_file();
+    std::string tasks_filename = "calendar_tasks.md";
+    std::string tasks_filepath = create_tasks_file(tasks_filename);
+    mMarkdown_writer = MarkdownWriter(tasks_filepath);
 }
 
-TasksAuthor::TasksAuthor(const TasksAuthor& tasks_author) : mVault_path(tasks_author.mVault_path),
-                                                            mTasks_filename(tasks_author.mTasks_filename) {}
+TasksAuthor::TasksAuthor(const TasksAuthor& tasks_author) : mVault_path(tasks_author.mVault_path) {}
 
-TasksAuthor::TasksAuthor(TasksAuthor&& tasks_author) : mVault_path(tasks_author.mVault_path),
-                                                       mTasks_filename(tasks_author.mTasks_filename) {
+TasksAuthor::TasksAuthor(TasksAuthor&& tasks_author) : mVault_path(tasks_author.mVault_path) {
     tasks_author.mVault_path = nullptr;
 }
 
 TasksAuthor::~TasksAuthor() {}
 
-const void TasksAuthor::create_tasks_file() {
+const std::string TasksAuthor::create_tasks_file(const std::string filename) {
     std::cout << "Creating the tasks file" << std::endl;
-    std::string full_path = mVault_path + "/" + mTasks_filename;
+    std::string full_path = mVault_path + "/" + filename;
     std::ofstream tasks_file = std::ofstream(full_path);
-
-    if (!std::filesystem::exists(mVault_path)) {
-        std::cerr << "Dir failed";
-    }
 
     if (!tasks_file) {
         std::cerr << "Failed" << std::endl;
         return;
     }
     tasks_file.close();
+
+    return full_path;
 }
 
 const std::string TasksAuthor::get_vault_path() {
