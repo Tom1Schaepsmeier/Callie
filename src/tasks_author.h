@@ -52,12 +52,12 @@ class TasksAuthor {
 
         @param obsidian_task (ObsidianTask*) - specifies all task related values to be written into the vault
         */
-        const void write_task(ObsidianTask *obsidian_task);
+        void write_task(const ObsidianTask *obsidian_task);
 
         /*
         Deletes a task from the obsidian vault
 
         @param obsidian_task (ObsidianTask*) - specifies the task to be deleted
         */
-        const void delete_task(ObsidianTask *obsidian_task);
+        void delete_task(ObsidianTask *obsidian_task);
 };

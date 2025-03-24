@@ -37,6 +37,6 @@ const std::string TasksAuthor::get_vault_path() {
     return mVault_path;
 }
 
-const void TasksAuthor::write_task(ObsidianTask *obsidian_task) {}
+const void TasksAuthor::write_task(const ObsidianTask *obsidian_task) {}
 
 const void TasksAuthor::delete_task(ObsidianTask *obsidian_task) {}
