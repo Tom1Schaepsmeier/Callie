@@ -1,11 +1,31 @@
 #include <string>
 #include <fstream>
+
 #include "obsidian_task.h"
-#include "markdown_writer.h"
 
 class TasksAuthor {
     std::string mVault_path;
-    MarkdownWriter mMarkdown_writer;
+    std::string mTasks_filename;
+
+    /*
+    Creates the markdown file we are allowed to write in if it does not exist already
+
+    @param filename (string) - specifies how the file should be named
+    @return the absolute path to that file
+    */
+    void create_tasks_file();
+
+    /*
+    Writes a line at the end of the markdown file
+
+    @param content (std::string) - holds the characters that will be written into the file
+    */
+    void write_line(const std::string content);
+
+    /*
+    TODO:
+    */
+    void delete_line(int line_number);
 
     public:
         /*
@@ -35,17 +55,14 @@ class TasksAuthor {
         ~TasksAuthor();
 
         /*
-        Creates the markdown file we are allowed to write in if it does not exist already
-
-        @param filename (string) - specifies how the file should be named
-        @return the absolute path to that file
-        */
-        const std::string create_tasks_file(const std::string filename);
-
-        /*
         Returns the path of the handled obsidian vault
         */
         const std::string get_vault_path();
+
+        /*
+        Returns the full path of the tasks filename
+        */
+        std::string get_tasks_filepath();
 
         /*
         Writes a task into the obsidian vault
