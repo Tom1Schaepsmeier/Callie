@@ -1,0 +1,8 @@
+---
+title: FullDay task
+allDay: true
+startDate: 2025-02-12
+endDate: 2025-02-13
+completed: null
+type: single
+---
