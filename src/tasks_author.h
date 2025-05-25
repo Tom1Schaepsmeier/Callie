@@ -4,8 +4,8 @@
 #include "obsidian_task.h"
 
 class TasksAuthor {
-    std::string mVault_path;
-    std::string mTasks_filename;
+    std::string mTasks_folderpath;
+    std::string calendar_tasks_file_content_body = "TimeTree";
 
     /*
     Creates the markdown file we are allowed to write in if it does not exist already
@@ -13,27 +13,36 @@ class TasksAuthor {
     @param filename (string) - specifies how the file should be named
     @return the absolute path to that file
     */
-    void create_tasks_file();
+    std::string create_event_file(const ObsidianTask* task);
+
+    /*
+    Generates the filename of the new Task by parsing the title + date and scanning the folder for similar names
+
+    @param folderpath (std::string*) - the folder the file will be created in
+    @param task (ObsidianTask*) - the event we parse to generate the filename
+    @return the filename
+    */
+    std::string generate_event_filename(const std::string* folderpath, const ObsidianTask* task);
 
     /*
     Writes a line at the end of the markdown file
 
     @param content (std::string) - holds the characters that will be written into the file
     */
-    void write_line(const std::string content);
+    void write_into_file(const std::string filename, const std::string* content);
 
     /*
     TODO:
     */
-    void delete_line(int line_number);
+    void delete_from_file(const std::string filename, const int line_number);
 
     public:
         /*
         Default constructor
 
-        @param vault_path (std::string) - specifies the path to the obsidian vault
+        @param tasks_folder_path (std::string) - specifies the path to the tasks folder
         */
-        TasksAuthor(std::string vault_path);
+        TasksAuthor(std::string tasks_folder_path);
         
         /*
         Copy Constructor
@@ -55,26 +64,21 @@ class TasksAuthor {
         ~TasksAuthor();
 
         /*
-        Returns the path of the handled obsidian vault
-        */
-        const std::string get_vault_path();
-
-        /*
         Returns the full path of the tasks filename
         */
-        std::string get_tasks_filepath();
+        std::string get_tasks_folderpath();
 
         /*
-        Writes a task into the obsidian vault
+        Creates a task file and writes the event into the obsidian vault
 
         @param obsidian_task (ObsidianTask*) - specifies all task related values to be written into the vault
         */
-        void write_task(const ObsidianTask *obsidian_task);
+        void create_event(const ObsidianTask* obsidian_task);
 
         /*
         Deletes a task from the obsidian vault
 
         @param obsidian_task (ObsidianTask*) - specifies the task to be deleted
         */
-        void delete_task(ObsidianTask *obsidian_task);
+        void delete_event(const ObsidianTask* obsidian_task);
 };

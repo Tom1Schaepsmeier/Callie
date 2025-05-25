@@ -4,31 +4,43 @@
 
 #include "tasks_author.h"
 #include "obsidian_task.h"
+#include "task2md_conversion/task2md_conversion.cpp"
 
-TasksAuthor::TasksAuthor(std::string vault_path) : mVault_path(vault_path),
-                                                   mTasks_filename("calendar_tasks.md")
+TasksAuthor::TasksAuthor(std::string tasks_folderpath) : mTasks_folderpath(tasks_folderpath)
 {
-    create_tasks_file();
+    create_event_file();
 }
 
-TasksAuthor::TasksAuthor(const TasksAuthor& tasks_author) : mVault_path(tasks_author.mVault_path),
-                                                            mTasks_filename(tasks_author.mTasks_filename) 
+TasksAuthor::TasksAuthor(const TasksAuthor& tasks_author) : mTasks_folderpath(tasks_author.mTasks_folderpath) 
 {}
 
-TasksAuthor::TasksAuthor(TasksAuthor&& tasks_author) : mVault_path(tasks_author.mVault_path),
-                                                       mTasks_filename(tasks_author.mTasks_filename) 
+TasksAuthor::TasksAuthor(TasksAuthor&& tasks_author) : mTasks_folderpath(tasks_author.mTasks_folderpath) 
 {
-    tasks_author.mVault_path = nullptr;
-    tasks_author.mTasks_filename = nullptr;
+    tasks_author.mTasks_folderpath = nullptr;
 }
 
 TasksAuthor::~TasksAuthor() 
 {}
 
-void TasksAuthor::create_tasks_file() 
+void TasksAuthor::create_event(ObsidianTask* task)
 {
-    std::string filepath = get_tasks_filepath();
-    std::ofstream tasks_file = std::ofstream(filepath);
+    std::string filename = create_event_file(task);
+    std::string file_content = convert(&task);
+    
+    write_into_file(filename, file_content);
+    write_into_file(filename, calendar_tasks_file_content_body);
+}
+
+void TasksAuthor::delete_task(ObsidianTask* task)
+{}
+
+
+std::string TasksAuthor::create_event_file(ObsidianTask* task) 
+{
+
+    std::string folderpath = get_tasks_folderpath();
+    std::string event_filename = generate_event_filename(&folderpath, task)
+    std::ofstream tasks_file = std::ofstream(folder);
 
     if (!tasks_file) {
         throw std::ios::failure("The task file of this vault was not created");
@@ -36,18 +48,18 @@ void TasksAuthor::create_tasks_file()
     tasks_file.close();
 }
 
-const std::string TasksAuthor::get_vault_path() 
+std::string TasksAuthor::generate_event_filename(const std::string* folderpath, const ObsidianTask* task)
 {
-    return mVault_path;
+    std::string filename = task->start_date + " " + task->title;
+    
 }
 
-std::string TasksAuthor::get_tasks_filepath() 
+void TasksAuthor::write_into_file(const std::string filename, const std::string* content)
 {
-    return get_vault_path() + "/" + mTasks_filename;
+
 }
 
-void TasksAuthor::write_task(const ObsidianTask *obsidian_task) 
-{}
+void TasksAuthor::delete_from_file(const std::string filename, const int line_number)
+{
 
-void TasksAuthor::delete_task(ObsidianTask *obsidian_task) 
-{}
+}
