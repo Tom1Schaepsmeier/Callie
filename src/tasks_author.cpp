@@ -7,9 +7,7 @@
 #include "task2md_conversion/task2md_conversion.cpp"
 
 TasksAuthor::TasksAuthor(std::string tasks_folderpath) : mTasks_folderpath(tasks_folderpath)
-{
-    create_event_file();
-}
+{}
 
 TasksAuthor::TasksAuthor(const TasksAuthor& tasks_author) : mTasks_folderpath(tasks_author.mTasks_folderpath) 
 {}
@@ -34,13 +32,15 @@ void TasksAuthor::create_event(ObsidianTask* task)
 void TasksAuthor::delete_task(ObsidianTask* task)
 {}
 
+std::string TasksAuthor::get_tasks_folderpath()
+{
+    return mTasks_folderpath;
+}
 
 std::string TasksAuthor::create_event_file(ObsidianTask* task) 
 {
-
-    std::string folderpath = get_tasks_folderpath();
     std::string event_filename = generate_event_filename(&folderpath, task)
-    std::ofstream tasks_file = std::ofstream(folder);
+    std::ofstream tasks_file = std::ofstream(get_tasks_folderpath() + event_filename);
 
     if (!tasks_file) {
         throw std::ios::failure("The task file of this vault was not created");
@@ -52,6 +52,7 @@ std::string TasksAuthor::generate_event_filename(const std::string* folderpath, 
 {
     std::string filename = task->start_date + " " + task->title;
     
+    return filename;
 }
 
 void TasksAuthor::write_into_file(const std::string filename, const std::string* content)

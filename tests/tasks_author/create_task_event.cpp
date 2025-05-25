@@ -7,10 +7,9 @@
 #include "tasks_author.h"
 #include "obsidian_task.h"
 
-bool does_task_file_exist(std::string folderpath, ObsidianTask* t1) 
+bool does_task_file_exist(std::string folderpath, std::string filename) 
 {
-    
-    return true;
+    return std::filesystem::exists(folderpath + filename);
 }
 
 TEST_SUITE("testing Tasks Author being able to write tasks into the tasks file")
@@ -23,7 +22,7 @@ TEST_SUITE("testing Tasks Author being able to write tasks into the tasks file")
 
         tasks_author.create_event(&t1);
 
-        CHECK(does_task_file_exist(tasks_author.get_tasks_filepath(), &t1));
+        CHECK(does_task_file_exist(tasks_author.get_tasks_folderpath(), &t1));
 
     }
 
