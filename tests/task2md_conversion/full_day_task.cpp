@@ -6,7 +6,7 @@
 
 #include "doctest.h"
 #include "obsidian_task.h"
-#include "task2md_conversion/task2md_conversion.cpp"
+#include "task2md_conversion/task2md_conversion.h"
 
 std::string get_task_file_content(std::string filename) {
     std::ifstream file(filename);

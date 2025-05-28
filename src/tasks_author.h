@@ -1,10 +1,14 @@
+#ifndef TASKS_AUTHOR_H
+#define TASKS_AUTHOR_H
+
 #include <string>
+#include <filesystem>
 #include <fstream>
 
 #include "obsidian_task.h"
 
 class TasksAuthor {
-    std::string mTasks_folderpath;
+    std::filesystem::path mTasks_folderpath;
     std::string calendar_tasks_file_content_body = "TimeTree";
 
     /*
@@ -22,7 +26,7 @@ class TasksAuthor {
     @param task (ObsidianTask*) - the event we parse to generate the filename
     @return the filename
     */
-    std::string generate_event_filename(const std::string* folderpath, const ObsidianTask* task);
+    std::string generate_event_filename(const std::filesystem::path* folderpath, const ObsidianTask* task);
 
     /*
     Writes a line at the end of the markdown file
@@ -66,7 +70,7 @@ class TasksAuthor {
         /*
         Returns the full path of the tasks filename
         */
-        std::string get_tasks_folderpath();
+        std::filesystem::path get_tasks_folderpath();
 
         /*
         Creates a task file and writes the event into the obsidian vault
@@ -82,3 +86,5 @@ class TasksAuthor {
         */
         void delete_event(const ObsidianTask* obsidian_task);
 };
+
+#endif

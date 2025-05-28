@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
-#include "obsidian_task.h"
 
-std::string convertFullDayTask(ObsidianTask* task) {
+#include "obsidian_task.h"
+#include "task2md_conversion/task2md_conversion.h"
+
+std::string convertFullDayTask(const ObsidianTask* task) {
     std::string date;
     std::string all_day_entry = "allDay: true\n";
     
@@ -17,7 +19,7 @@ std::string convertFullDayTask(ObsidianTask* task) {
     return date;
 }
 
-std::string convertScheduledTimeTask(ObsidianTask* task) {
+std::string convertScheduledTimeTask(const ObsidianTask* task) {
     std::string date_and_time;
     std::string all_day_entry = "allDay: false\n";
 
@@ -36,7 +38,7 @@ std::string convertScheduledTimeTask(ObsidianTask* task) {
     return date_and_time;
 }
 
-std::string convertTimeAndDateInformation(ObsidianTask* task) {
+std::string convertTimeAndDateInformation(const ObsidianTask* task) {
     std::string time_and_date_information;
     
     if (task->isFullDay)
@@ -47,7 +49,7 @@ std::string convertTimeAndDateInformation(ObsidianTask* task) {
     return time_and_date_information;
 }
 
-std::string convert(ObsidianTask* task){
+std::string convert(const ObsidianTask* task){
     std::string task_file_content;
 
     task_file_content += "---\n";
