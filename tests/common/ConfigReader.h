@@ -1,6 +1,0 @@
-
-class ConfigReader {
-
-    public:
-        mConfig
-}

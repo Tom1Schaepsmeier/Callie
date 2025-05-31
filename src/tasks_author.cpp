@@ -42,7 +42,7 @@ std::string TasksAuthor::create_event_file(const ObsidianTask* task)
     std::filesystem::path tasks_folderpath = get_tasks_folderpath();
     std::string event_filename = generate_event_filename(&tasks_folderpath, task);
 
-    if (task_file_exists(&event_filename))
+    //if (task_file_exists(&event_filename))
 
     std::ofstream tasks_file = std::ofstream(tasks_folderpath / event_filename );
 
