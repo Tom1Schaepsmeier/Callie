@@ -1,8 +1,9 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include <string>
-#include "filesystem"
+#include <filesystem>
 
+#include "common/EventListener.h"
 #include "doctest.h"
 #include "tasks_author.h"
 #include "obsidian_task.h"
@@ -37,10 +38,13 @@ std::string add_calendar_identifier(std::string content)
 
 TEST_SUITE("testing Tasks Author being able to write tasks into the tasks file")
 {
-    TasksAuthor tasks_author = TasksAuthor("/home/tom-schaepsmeier/Documents/Zettelkasten/6 - Tasks Management/Calendar Tasks");
+    std::string event_path = "/home/tom-schaepsmeier/Documents/Zettelkasten/6 - Tasks Management/Calendar Tasks";
+    TasksAuthor tasks_author = TasksAuthor(event_path);
+    EventListener event_listener = EventListener(&event_path);
     
     TEST_CASE("test writing a new full day task which is scheduled for one day")
     {
+        event_listener.start();
         ObsidianTask t1("Full Day Task Same Day", "2025-02-12");
         tasks_author.create_event(&t1);
 
@@ -50,6 +54,13 @@ TEST_SUITE("testing Tasks Author being able to write tasks into the tasks file")
 
         CHECK(does_task_file_exist(tasks_author.get_tasks_folderpath(), expected_filename));
         CHECK_EQ(get_task_file_content(tasks_author.get_tasks_folderpath(), expected_filename), expected_file_content);
+        event_listener.stop();
+        std::vector<std::filesystem::path> created_files = event_listener.retrieve_added_files();
+        
+        for (const auto &filepath : created_files) {
+            std::filesystem::remove(filepath);
+        }
+        
     }
 
     TEST_CASE("test writing a new full day task which is scheduled for multiple days")

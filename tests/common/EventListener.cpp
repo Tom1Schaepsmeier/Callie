@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 #include <filesystem>
 #include <thread>
@@ -47,8 +45,9 @@ Starts observing the directory for file changes
 void EventListener::start()
 {
     is_observing = true;
-    std::thread observer_thread(observe_event_directory);
+    std::thread observer_thread(&EventListener::observe_event_directory, this);
     observer_thread.detach();
+    sleep(1);
 }
 
 /*
@@ -73,12 +72,18 @@ Observes the directory in a loop and stores added files
 */
 void EventListener::observe_event_directory()
 {
+    // Initializing the set with all files which already existed before
     std::unordered_set<std::filesystem::path> last_iteration_events;
+    for (auto const& event_filename : std::filesystem::directory_iterator(mEvent_directory)) {
+        last_iteration_events.insert(event_filename);
+    }
+
     while (is_observing) {
         for (auto const& event_filename : std::filesystem::directory_iterator(mEvent_directory)) {
-            if (last_iteration_events.find(event_filename) != last_iteration_events.end())
-                last_iteration_events.insert(event_filename);
-        } 
+            if (last_iteration_events.find(event_filename) == last_iteration_events.end()) {
+                mAdded_files.push_back(event_filename);
+            }
+        }
     }
 }
 
