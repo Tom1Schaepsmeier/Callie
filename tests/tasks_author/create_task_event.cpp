@@ -65,6 +65,7 @@ TEST_SUITE("testing Tasks Author being able to write tasks into the tasks file")
 
     TEST_CASE("test writing a new full day task which is scheduled for multiple days")
     {
+        event_listener.start();
         ObsidianTask t1("Full Day Task multiple days", "2025-02-12", "2025-02-13");
         tasks_author.create_event(&t1);
 
@@ -74,10 +75,18 @@ TEST_SUITE("testing Tasks Author being able to write tasks into the tasks file")
 
         CHECK(does_task_file_exist(tasks_author.get_tasks_folderpath(), expected_filename));
         CHECK_EQ(get_task_file_content(tasks_author.get_tasks_folderpath(), expected_filename), expected_file_content);
+
+        event_listener.stop();
+        std::vector<std::filesystem::path> created_files = event_listener.retrieve_added_files();
+
+        for (const auto &filepath : created_files) {
+            std::filesystem::remove(filepath);
+        }
     }
 
     TEST_CASE("test writing a time scheduled task which is only within one day")
     {
+        event_listener.start();
         std::string start_time = "14:30";
         std::string end_time = "17:21";
         ObsidianTask t1("Scheduled Time Task Same day", "2025-02-12", &start_time, &end_time);
@@ -89,10 +98,17 @@ TEST_SUITE("testing Tasks Author being able to write tasks into the tasks file")
 
         CHECK(does_task_file_exist(tasks_author.get_tasks_folderpath(), expected_filename));
         CHECK_EQ(get_task_file_content(tasks_author.get_tasks_folderpath(), expected_filename), expected_file_content);
+
+        event_listener.stop();
+        std::vector<std::filesystem::path> created_files = event_listener.retrieve_added_files();
+        for (const auto &filepath : created_files) {
+            std::filesystem::remove(filepath);
+        }
     }
 
     TEST_CASE("test writing a time scheduled task which goes over multiple days")
     {
+        event_listener.start();
         std::string start_time = "15:04";
         std::string end_time = "09:49";
         ObsidianTask t1("Scheduled Time Task multiple days", "2025-02-12", "2025-02-13", &start_time, &end_time);
@@ -104,26 +120,51 @@ TEST_SUITE("testing Tasks Author being able to write tasks into the tasks file")
 
         CHECK(does_task_file_exist(tasks_author.get_tasks_folderpath(), expected_filename));
         CHECK_EQ(get_task_file_content(tasks_author.get_tasks_folderpath(), expected_filename), expected_file_content);
+        
+        event_listener.stop();
+        std::vector<std::filesystem::path> created_files = event_listener.retrieve_added_files();
+        for (const auto &filepath : created_files) {
+            std::filesystem::remove(filepath);
+        }
     }
 
     TEST_CASE("test writing two tasks with same name and date")
     {
-        ObsidianTask t1("Test Task", "2025-02-12");
-        ObsidianTask t2("Test Task", "2025-02-12");
-        tasks_author.create_event(&t1);
-        tasks_author.create_event(&t2);
+        std::string event_path = "/home/tom-schaepsmeier/Documents/Zettelkasten/6 - Tasks Management/Calendar Tasks";
+        EventListener event_listener = EventListener(&event_path);
+        event_listener.start();
 
-        std::string expected_file_content_1 = convert(&t1);
-        std::string expected_file_content_2 = convert(&t2);
-        expected_file_content_1 = add_calendar_identifier(expected_file_content_1);
-        expected_file_content_2 = add_calendar_identifier(expected_file_content_2);
-        std::string expected_filename_1 = "2025-02-12 Test Task 1.md"; 
-        std::string expected_filename_2 = "2025-02-12 Test Task 2.md";
+        std::vector<ObsidianTask> tasks;
+        std::vector<std::string> expected_filenames;
+        std::vector<std::string> expected_file_contents;
+        for (int i = 1; i <= 20; i++) {
+            ObsidianTask single_task("Test Task", "2025-02-12");
+            tasks_author.create_event(&single_task);
+            tasks.push_back(single_task);
 
-        CHECK(does_task_file_exist(tasks_author.get_tasks_folderpath(), expected_filename_1));
-        CHECK(does_task_file_exist(tasks_author.get_tasks_folderpath(), expected_filename_2));
-        CHECK_EQ(get_task_file_content(tasks_author.get_tasks_folderpath(), expected_filename_1), expected_file_content_1);
-        CHECK_EQ(get_task_file_content(tasks_author.get_tasks_folderpath(), expected_filename_2), expected_file_content_2);
+            expected_filenames.push_back("2025-02-12 Test Task " + std::to_string(i) + ".md");
+            single_task.title = "Test Task " + std::to_string(i);
+            std::string expected_content = convert(&single_task) + "TimeTree\n";
+            expected_file_contents.push_back(expected_content);
+        }
+
+        std::cout << expected_filenames.size() << std::endl;
+        for (int i = 0; i < (int)expected_filenames.size(); i++) {
+            std::cout << "Checking if '" << expected_filenames.at(i) << "' exists" << std::endl;
+            CHECK(does_task_file_exist(tasks_author.get_tasks_folderpath(), expected_filenames.at(i)));
+            CHECK_EQ(get_task_file_content(tasks_author.get_tasks_folderpath(), expected_filenames.at(i)), expected_file_contents.at(i));
+        }
+
+        event_listener.stop();
+        std::vector<std::filesystem::path> created_files = event_listener.retrieve_added_files();
+        for (const auto &filepath : created_files) {
+            std::filesystem::remove(filepath);
+        }
+
+    }
+
+    TEST_CASE("test writing multiple scheduled tasks at same day being named in correct order") {
+        
     }
 
 }

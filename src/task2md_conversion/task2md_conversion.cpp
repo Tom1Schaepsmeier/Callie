@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 #include <string>
 
@@ -60,4 +61,11 @@ std::string convert(const ObsidianTask* task){
     task_file_content += "---\n";
 
     return task_file_content;
+}
+
+void number_task(ObsidianTask* task, const int number) {
+    if (number <= 0)
+        return;
+
+    task->title += " " + std::to_string(number);
 }

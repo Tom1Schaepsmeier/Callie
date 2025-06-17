@@ -15,18 +15,20 @@ class TasksAuthor {
     Creates the markdown file we are allowed to write in if it does not exist already
 
     @param filename (string) - specifies how the file should be named
+    @param number (integer) - the number which should the file contain
     @return the absolute path to that file
     */
-    std::string create_event_file(const ObsidianTask* task);
+    std::string create_event_file(const ObsidianTask* task, int number);
 
     /*
     Generates the filename of the new Task by parsing the title + date and scanning the folder for similar names
 
     @param folderpath (std::string*) - the folder the file will be created in
     @param task (ObsidianTask*) - the event we parse to generate the filename
+    @param number (int) - adds a number to the filename (if not zero) to differentiate each task from eachother
     @return the filename
     */
-    std::string generate_event_filename(const std::filesystem::path* folderpath, const ObsidianTask* task);
+    std::string generate_event_filename(const std::filesystem::path* folderpath, const ObsidianTask* task, int number);
 
     /*
     Writes a line at the end of the markdown file
@@ -39,6 +41,21 @@ class TasksAuthor {
     TODO:
     */
     void delete_from_file(const std::string filename, const int line_number);
+
+    /*
+    Parses the event directory and finds the number of events with the same date and name
+
+    @param task (const ObsidianTask*) - 
+    @return number of equal events
+    */
+    int get_event_count(const ObsidianTask* task);
+
+    /*
+    Adds a number to the event filename and its metadata task name
+
+    @param event_filename (std::string) - file in the tasks folder which shall be numbered
+    */
+    void number_event(std::string event_filename, int number);
 
     public:
         /*
