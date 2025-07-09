@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <curl/curl.h>
+#include <ctime>
 #include "src/event.h"
 #include "src/tasks_author.h"
 
@@ -21,10 +22,13 @@ int main() {
 
     // convert data into different format
 
-    CalendarEvent e1;
+    // CalendarEvent e1;
 
-    TasksAuthor a1 = TasksAuthor("/home/tom-schaepsmeier/Documents/Projects/TTExport");
+    // TasksAuthor a1 = TasksAuthor("/home/tom-schaepsmeier/Documents/Projects/TTExport");
 
 
-    return 0;
+    // return 0;
+    tm my_time;
+    my_time.tm_hour = -1;
+    std::cout << my_time.tm_hour << std::endl;
 }
