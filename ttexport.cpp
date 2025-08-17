@@ -2,8 +2,8 @@
 #include <string>
 #include <curl/curl.h>
 #include <ctime>
-#include "src/event.h"
-#include "src/tasks_author.h"
+#include "src/obsidian_event.h"
+#include "src/timetree_task.h"
 
 int main() {
 
@@ -22,13 +22,13 @@ int main() {
 
     // convert data into different format
 
-    // CalendarEvent e1;
-
-    // TasksAuthor a1 = TasksAuthor("/home/tom-schaepsmeier/Documents/Projects/TTExport");
-
-
-    // return 0;
-    tm my_time;
-    my_time.tm_hour = -1;
-    std::cout << my_time.tm_hour << std::endl;
+    std::string title = "Hello world";
+    tm start_time;
+    start_time.tm_year = 2025;
+    start_time.tm_mon = 02;
+    start_time.tm_mday = 12;
+    tm end_time = start_time;
+    TimeTreeTask task = TimeTreeTask(&title, &start_time, &end_time, false);
+    ObsidianEvent event = ObsidianEvent(&task);
+    std::cout << *event.get_title() << std::endl;
 }

@@ -3,13 +3,16 @@ CXXFLAGS = -std=c++17 -Wall -Itests -Isrc
 SUITE ?= 
 SOURCES ?=
 
-ttexport: ttexport.cpp src/tasks_author.cpp
-	g++ ttexport.cpp src/tasks_author.cpp -o ttexport
+ttexport: ttexport.cpp src/timetree_task.h
+	g++ ttexport.cpp -o ttexport
 	./ttexport
 
 test: tests/doctest.h
 	$(CXX) $(CXXFLAGS) $(SUITE) $(SOURCES) -o test_runner
 	./test_runner
+
+timetree_task:	src/timetree_task.h
+	g++	src/timetree_task.cpp
 
 clean:
 	rm -f ./ttexport
