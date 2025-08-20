@@ -4,7 +4,7 @@ SUITE ?=
 SOURCES ?=
 
 ttexport: ttexport.cpp src/timetree_task.h
-	g++ ttexport.cpp -o ttexport
+	g++ ttexport.cpp src/timetree_task.cpp -o ttexport
 	./ttexport
 
 test: tests/doctest.h

@@ -21,7 +21,7 @@ int main() {
     // store data properly
 
     // convert data into different format
-
+    srand(time(nullptr));
     std::string title = "Hello world";
     tm start_time;
     start_time.tm_year = 2025;
@@ -29,6 +29,7 @@ int main() {
     start_time.tm_mday = 12;
     tm end_time = start_time;
     TimeTreeTask task = TimeTreeTask(&title, &start_time, &end_time, false);
-    ObsidianEvent event = ObsidianEvent(&task);
-    std::cout << *event.get_title() << std::endl;
+    TimeTreeTask t2 = TimeTreeTask(&title, &start_time, &end_time, false);
+    if (!(task == t2))
+        std::cout << "ha" << std::endl;
 }

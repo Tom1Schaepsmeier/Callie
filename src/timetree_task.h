@@ -1,5 +1,6 @@
 #pragma once
 #include <ctime>
+#include <iostream>
 #include <memory>
 #include <string>
 
@@ -15,7 +16,11 @@ struct TimeTreeTask {
                  tm* task_end_time, bool is_task_full_day, 
                  std::string* task_location=nullptr, std::string* task_notes=nullptr);
 
-    std::string id();
+    friend std::ostream& operator<<(std::ostream& os, const TimeTreeTask& tt_task);
+
+    bool operator==(const TimeTreeTask& other);
+
+    std::string id() const;
                 
     private:
         std::string id_;

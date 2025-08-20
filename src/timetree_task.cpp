@@ -3,7 +3,7 @@
 #include <memory>
 #include <stdexcept>
 #include <stdlib.h>
-#include <string>
+#include <string.h>
 
 #include "timetree_task.h"
 
@@ -23,7 +23,19 @@ TimeTreeTask::TimeTreeTask(std::string* task_title, tm* task_start_time,
     notes = std::make_shared<std::string>("TimeTree: " + id_ + "\n" + ((task_notes != nullptr) ? *task_notes : ""));
 }
 
-std::string TimeTreeTask::id()
+std::ostream& operator<<(std::ostream& os, const TimeTreeTask& tt_task)
+{
+    os << tt_task.id();
+    return os;
+}
+
+bool TimeTreeTask::operator==(const TimeTreeTask& other)
+{
+    return (this->id().compare(other.id()) == 0);
+}
+
+
+std::string TimeTreeTask::id() const
 {
     return this->id_;
 }
