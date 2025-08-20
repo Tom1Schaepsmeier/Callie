@@ -13,26 +13,29 @@ TimeTreeTask::TimeTreeTask(std::string* task_title, tm* task_start_time,
                                                     start_time(task_start_time),
                                                     end_time(task_end_time),
                                                     is_full_day(is_task_full_day),
-                                                    location(task_location),
-                                                    notes(task_notes)
+                                                    location(task_location)
 {
-    if (task_end_time < task_start_time)
+    if (std::mktime(task_end_time) < std::mktime(task_start_time))
         throw std::invalid_argument("The End Time of the task cannot be earlier than its Start Time");
 
     generate_id();
-    
+
+    notes = std::make_shared<std::string>("TimeTree: " + id_ + "\n" + ((task_notes != nullptr) ? *task_notes : ""));
+}
+
+std::string TimeTreeTask::id()
+{
+    return this->id_;
 }
 
 void TimeTreeTask::generate_id()
 {
-    id = std::unique_ptr<std::string>(new std::string);
-    srand(time(NULL));
+    id_ = "";
     for (int i=0;i<=5;i++) // we want to create an id which is 6 characters long
     {
         char buf [2];
         int num = rand() % 16;
         sprintf(buf, "%x", num);
-        *this->id += buf;
+        id_ += buf;
     }
-    std::cout << *this->id << std::endl;
 }

@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Itests -Isrc
+CXXFLAGS = -std=c++20 -Wall -Itests -Isrc
 SUITE ?= 
 SOURCES ?=
 
