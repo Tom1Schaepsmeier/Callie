@@ -10,15 +10,15 @@ struct TimeTreeTask {
     tm* end_time;
     bool is_full_day;
     std::string* location;
-    std::shared_ptr<std::string> notes;
+    std::string* notes;
 
     TimeTreeTask(std::string* task_title, tm* task_start_time, 
                  tm* task_end_time, bool is_task_full_day, 
                  std::string* task_location=nullptr, std::string* task_notes=nullptr);
 
-    friend std::ostream& operator<<(std::ostream& os, const TimeTreeTask& tt_task);
+    std::ostream& operator<<(std::ostream& os) const;
 
-    bool operator==(const TimeTreeTask& other);
+    bool operator==(const TimeTreeTask& other) const;
 
     std::string id() const;
                 

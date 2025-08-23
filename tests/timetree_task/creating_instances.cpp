@@ -20,9 +20,7 @@ TEST_SUITE("testing the correct creation of TimeTreeTask instances")
         CHECK_EQ(std::mktime(t2.end_time), std::mktime(&end_time));
         CHECK_EQ(t2.is_full_day, false);
         CHECK_EQ(t2.location, nullptr);
-
-        std::string task_id = "TimeTree: " + t2.id() + "\n";
-        CHECK_EQ(*t2.notes, task_id);
+        CHECK_EQ(t2.notes, nullptr);
     }
 
     TEST_CASE("testing correct instantiation with all required parameter for full day task")
@@ -38,9 +36,7 @@ TEST_SUITE("testing the correct creation of TimeTreeTask instances")
         CHECK_EQ(std::mktime(t2.end_time), std::mktime(&end_time));
         CHECK_EQ(t2.is_full_day, true);
         CHECK_EQ(t2.location, nullptr);
-
-        std::string task_id = "TimeTree: " + t2.id() + "\n";
-        CHECK_EQ(*t2.notes, task_id);
+        CHECK_EQ(t2.notes, nullptr);
     }
 
     TEST_CASE("testing correct instantiation when all available parameters are given")
@@ -58,9 +54,7 @@ TEST_SUITE("testing the correct creation of TimeTreeTask instances")
         CHECK_EQ(std::mktime(t2.end_time), std::mktime(&end_time));
         CHECK_EQ(t2.is_full_day, true);
         CHECK_EQ(*t2.location, task_location);
-
-        std::string expected_notes = "TimeTree: " + t2.id() + "\nMy own notes";
-        CHECK_EQ(*t2.notes, expected_notes);
+        CHECK_EQ(*t2.notes, task_notes);
     }
 
     TEST_CASE("testing exception being thrown when end time is earlier than start time")

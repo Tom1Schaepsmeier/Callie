@@ -13,23 +13,22 @@ TimeTreeTask::TimeTreeTask(std::string* task_title, tm* task_start_time,
                                                     start_time(task_start_time),
                                                     end_time(task_end_time),
                                                     is_full_day(is_task_full_day),
-                                                    location(task_location)
+                                                    location(task_location),
+                                                    notes(task_notes)
 {
     if (std::mktime(task_end_time) < std::mktime(task_start_time))
         throw std::invalid_argument("The End Time of the task cannot be earlier than its Start Time");
 
     generate_id();
-
-    notes = std::make_shared<std::string>("TimeTree: " + id_ + "\n" + ((task_notes != nullptr) ? *task_notes : ""));
 }
 
-std::ostream& operator<<(std::ostream& os, const TimeTreeTask& tt_task)
+std::ostream& TimeTreeTask::operator<<(std::ostream& os) const
 {
-    os << tt_task.id();
+    os << id();
     return os;
 }
 
-bool TimeTreeTask::operator==(const TimeTreeTask& other)
+bool TimeTreeTask::operator==(const TimeTreeTask& other) const
 {
     return (this->id().compare(other.id()) == 0);
 }
