@@ -31,9 +31,4 @@ struct ObsidianEvent {
         title_day + " " + *name;
         return event_title;
     }
-
-    // std::unique_ptr<std::string> convert_to_md() const
-    // {
-
-    // }
 };

@@ -16,6 +16,10 @@ struct TimeTreeTask {
                  tm* task_end_time, bool is_task_full_day, 
                  std::string* task_location=nullptr, std::string* task_notes=nullptr);
 
+    TimeTreeTask(std::string* task_id, std::string* task_title, tm* task_start_time, 
+                tm* task_end_time, bool is_task_full_day, 
+                std::string* task_location=nullptr, std::string* task_notes=nullptr);
+
     std::ostream& operator<<(std::ostream& os) const;
 
     bool operator==(const TimeTreeTask& other) const;
@@ -24,5 +28,8 @@ struct TimeTreeTask {
                 
     private:
         std::string id_;
+
         void generate_id();
+
+        void verify_id() const;
 };
